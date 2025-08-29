@@ -45,7 +45,7 @@ export default function ActivityDetailsScreen() {
           {activity.speakers.map((s, idx) => (
             <View key={idx} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
               {s.photo ? (
-                <Image source={{ uri: s.photo }} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 8 }} />
+                <Image source={s.photo} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 8 }} />
               ) : (
                 <View style={{ width: 40, height: 40, borderRadius: 20, marginRight: 8, backgroundColor: '#222' }} />
               )}

@@ -58,7 +58,7 @@ export default function TalksScreen() {
           >
             <View style={{ width: 60, alignItems: 'center' }}>
               <Ionicons name="time-outline" size={20} color={colors.primaryBlue} />
-              <Text style={{ color: colors.primaryBlue, marginTop: 4 }}>{item.start}</Text>
+              <Text style={{ color: colors.primaryBlue, marginTop: 4 }}>{item.end ? `${item.start} – ${item.end}` : item.start}</Text>
             </View>
             <View style={{ width: 1, height: '100%', backgroundColor: colors.border }} />
             <View style={{ flex: 1 }}>
