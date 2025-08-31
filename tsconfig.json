@@ -10,6 +10,7 @@
       "@context/*": ["src/context/*"],
       "@components/*": ["src/components/*"],
       "@data/*": ["src/data/*"]
-    }
+    },
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   }
 }

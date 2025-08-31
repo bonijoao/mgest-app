@@ -1,5 +1,6 @@
-import React, { useLayoutEffect, useMemo } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
@@ -9,6 +10,8 @@ import { colors } from '../theme/colors';
 import { ACTIVITIES } from '../data/schedule';
 
 export default function ActivityDetailsScreen() {
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<ImageSourcePropType | undefined>(undefined);
   const route = useRoute<RouteProp<RootStackParamList, 'ActivityDetails'>>();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -34,6 +37,7 @@ export default function ActivityDetailsScreen() {
   }
 
   return (
+    <>
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: 16 }}>
       <Text style={{ color: colors.textPrimary, fontSize: 22, marginBottom: 8 }}>{activity.title}</Text>
       <Text style={{ color: colors.primaryBlue }}>{activity.date} • {activity.start}{activity.end ? ` - ${activity.end}` : ''}</Text>
@@ -41,17 +45,21 @@ export default function ActivityDetailsScreen() {
 
       {activity.speakers && activity.speakers.length > 0 ? (
         <View style={{ marginTop: 16 }}>
-          <Text style={{ color: colors.textPrimary, marginBottom: 8 }}>Palestrantes</Text>
-          {activity.speakers.map((s, idx) => (
-            <View key={idx} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-              {s.photo ? (
-                <Image source={s.photo} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 8 }} />
-              ) : (
-                <View style={{ width: 40, height: 40, borderRadius: 20, marginRight: 8, backgroundColor: '#222' }} />
-              )}
-              <Text style={{ color: colors.textPrimary }}>{s.name}</Text>
-            </View>
-          ))}
+          <Text style={{ color: colors.textPrimary, marginBottom: 8, textAlign: 'center' }}>Palestrantes</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 16 }}>
+            {activity.speakers.map((s, idx) => (
+              <View key={idx} style={{ alignItems: 'center', marginBottom: 12 }}>
+                {s.photo ? (
+                  <TouchableOpacity onPress={() => { setSelectedPhoto(s.photo); setIsPhotoModalOpen(true); }}>
+                    <Image source={s.photo} style={{ width: 96, height: 96, borderRadius: 48, marginBottom: 8 }} />
+                  </TouchableOpacity>
+                ) : (
+                  <View style={{ width: 96, height: 96, borderRadius: 48, marginBottom: 8, backgroundColor: '#222' }} />
+                )}
+                <Text style={{ color: colors.textPrimary, textAlign: 'center' }}>{s.name}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       ) : null}
 
@@ -61,6 +69,22 @@ export default function ActivityDetailsScreen() {
         </View>
       ) : null}
     </ScrollView>
+    <Modal
+      visible={isPhotoModalOpen}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setIsPhotoModalOpen(false)}
+    >
+      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)', alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity onPress={() => setIsPhotoModalOpen(false)} style={{ position: 'absolute', top: 40, right: 20, padding: 8 }}>
+          <Ionicons name="close" size={28} color="#fff" />
+        </TouchableOpacity>
+        {selectedPhoto ? (
+          <Image source={selectedPhoto} style={{ width: '90%', height: '80%', resizeMode: 'contain' }} />
+        ) : null}
+      </View>
+    </Modal>
+    </>
   );
 }
 
