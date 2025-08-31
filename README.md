@@ -1,14 +1,26 @@
+# XVII MGEST App
 
-## Rodar o app
+Aplicativo móvel para o XVII MGEST (Encontro Mineiro de Estatística)
 
+## Desenvolvimento
+
+### Pré-requisitos
+- Node.js
+- npm
+- Expo CLI
+
+### Executando o app localmente 
+
+
+```
 cd C:\Users\jpab2\Documentos\UFLA\mgest.app\mgest-app
 npm start
-
 npm start -- --tunnel
-
+```
 ## compilar apk 
-
-  cd C:\Users\jpab2\Documentos\UFLA\mgest.app\mgest-app
-  npx eas login
-  npx eas build:configure
-  npx eas build -p android --profile preview
+```
+cd C:\Users\jpab2\Documentos\UFLA\mgest.app\mgest-app
+npx eas login
+npx eas build:configure
+npx eas build -p android --profile preview
+```
